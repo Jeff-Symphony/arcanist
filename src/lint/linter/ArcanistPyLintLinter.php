@@ -233,7 +233,7 @@ final class ArcanistPyLintLinter extends ArcanistLinter {
       $message->setLine($matches[2]);
       $message->setCode($matches[1]);
       $message->setName($this->getLinterName()." ".$matches[1]);
-      $message->setDescription($matches[3]);
+      $message->setDescription($line);
       $message->setSeverity($this->getMessageCodeSeverity($matches[1]));
       $this->addLintMessage($message);
     }
