@@ -20,19 +20,13 @@ final class SymphonyLintEngine extends ArcanistLintEngine {
       if (!$this->pathExists($path)) {
         unset($paths[$key]);
       }
-    }
-
-    /*
-    foreach ($paths as $path) {
-      if (!preg_match('/\.py$/', $path)) {
-        continue;
-      }
       // an example of how to exclude a path?
+      //TODO - figure out what python scprits to exclude?
+      //TODO - figure out what js files to exclude?
       if (preg_match('@^externals/@', $path)) {
-        continue;
+        unset($paths[$key]);
       }
     }
-    */
 
     $py_paths = preg_grep('/\.py$/', $paths);
     $linters[] = id(new ArcanistPyLintLinter())->setPaths($py_paths);
