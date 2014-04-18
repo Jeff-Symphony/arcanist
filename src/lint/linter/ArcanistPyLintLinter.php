@@ -113,7 +113,7 @@ final class ArcanistPyLintLinter extends ArcanistLinter {
       if ($err) {
         throw new ArcanistUsageException(
           "PyLint does not appear to be installed on this system. Install it ".
-          "(e.g., with 'sudo easy_install pylint') or configure ".
+          "(e.g., with 'sudo pip install pylint') or configure ".
           "'lint.pylint.prefix' in your .arcconfig to point to the directory ".
           "where it resides.");
       }
