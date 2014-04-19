@@ -1,0 +1,29 @@
+# PyLint configuration file for Symphony Commerce.
+#
+# Just place it in ~/.pylintrc for user-wide installation or simply
+# use within a call to pylint or export environment variable
+# export PYLINTRC=$PWD/doc/misc/pylintrc
+
+[FORMAT]
+indent-string='    '
+max-line-length=80
+
+[MESSAGES CONTROL]
+# Disable the following PyLint messages:
+# E1101 - Has no member 
+# C0103 - Invalid name
+# R0903 - Too few public methods
+# R0902 - Too many instance attributes
+# C0111 - Missing docstring
+# R0201 - Method could be a function
+disable=E1101,C0103,R0903,R0902,C0111,R0201
+
+[REPORTS]
+
+# set the output format. `text` is required for Arcanist
+output-format=text
+
+# Include message's id in output
+include-ids=yes
+
+
