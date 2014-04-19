@@ -20,10 +20,11 @@ final class SymphonyLintEngine extends ArcanistLintEngine {
       if (!$this->pathExists($path)) {
         unset($paths[$key]);
       }
-      // an example of how to exclude a path?
-      //TODO - figure out what python scprits to exclude?
-      //TODO - figure out what js files to exclude?
+      // exclude certain paths from linter
       if (preg_match('@^externals/@', $path)) {
+        unset($paths[$key]);
+      }
+      if (preg_match('@^lib/@', $path)) {
         unset($paths[$key]);
       }
     }
