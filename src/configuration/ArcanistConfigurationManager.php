@@ -31,6 +31,19 @@ final class ArcanistConfigurationManager {
     return null;
   }
 
+  public function getSymphonyConfig($key) {
+    $basePath = dirname(realpath(__FILE__));
+
+    $special_keys = array("lint.jshint.config", "lint.jshint.prefix", "lint.pylint.rcfile");
+    if (in_array($key, $special_keys)) {
+      if ($this->workingCopy) {
+        $val = $this->workingCopy->getProjectConfig($key);
+        return $basePath . '/' . $val;
+      }
+    }
+    return null;
+  }
+
   public function getLocalConfig($key) {
     if ($this->workingCopy) {
       return $this->workingCopy->getLocalConfig($key);
@@ -93,6 +106,12 @@ final class ArcanistConfigurationManager {
     }
 
     $pval = $this->getProjectConfig($key);
+    if ($pval !== null) {
+      $results[self::CONFIG_SOURCE_PROJECT] =
+        $settings->willReadValue($key, $pval);
+    }
+
+    $pval = $this->getSymphonyConfig($key);
     if ($pval !== null) {
       $results[self::CONFIG_SOURCE_PROJECT] =
         $settings->willReadValue($key, $pval);
