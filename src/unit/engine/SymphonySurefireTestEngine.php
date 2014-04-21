@@ -97,7 +97,7 @@ class SymphonySurefireTestEngine extends ArcanistBaseUnitTestEngine {
    */
   private function runTests($specific_tests) {
     $tests = "";
-    if(count($specific_tests)){
+    if(count($specific_tests) && $specific_tests[0]){
       $tests = " -Dtest=" . implode(",", $specific_tests);
     }
 
