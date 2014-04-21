@@ -32,13 +32,16 @@ final class ArcanistConfigurationManager {
   }
 
   public function getSymphonyConfig($key) {
-    $basePath = dirname(realpath(__FILE__));
+    $basePath = dirname(realpath(__FILE__)) . '/../../resources/';
 
     $special_keys = array("lint.jshint.config", "lint.jshint.prefix", "lint.pylint.rcfile");
     if (in_array($key, $special_keys)) {
       if ($this->workingCopy) {
         $val = $this->workingCopy->getProjectConfig($key);
-        return $basePath . '/' . $val;
+        $relative_path = $basePath . $val;
+        if(Filesystem::pathExists($relative_path)){
+          return $relative_path;
+        }
       }
     }
     return null;
