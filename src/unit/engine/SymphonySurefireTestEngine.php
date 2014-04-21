@@ -25,13 +25,13 @@ class SymphonySurefireTestEngine extends ArcanistBaseUnitTestEngine {
    */
   public function run() {
 
-    $paths = $this->getPaths();
-    
-    return $this->runAllTests($paths);
+    $specific_tests = $this->getPaths();
+
+    return $this->runAllTests($specific_tests);
   }
 
 
-  public function runAllTests($specifc_tests) {
+  public function runAllTests($specific_tests) {
     $results = array();
 
     //clean test-compile
@@ -47,7 +47,7 @@ class SymphonySurefireTestEngine extends ArcanistBaseUnitTestEngine {
     }
 
     //test (skip schema build)
-    $results[] = $this->runTests($specifc_tests);
+    $this->runTests($specific_tests);
     $results[] = $this->parseTestResult('spcore/target/surefire-reports');
     return array_mergev($results);
   }
@@ -91,14 +91,18 @@ class SymphonySurefireTestEngine extends ArcanistBaseUnitTestEngine {
 
   /**
    * Run tests through maven. 
-   * Optionally, specify which tests to run.
    *
-   * @return array   Array of results.
+   * @param  array   Optionally specify which tests to run.
+   *
    */
-  private function runTests($specifc_tests) {
-    $this->execMaven('test -Dskip.schema.build=true');
+  private function runTests($specific_tests) {
+    $tests = "";
+    if(count($specific_tests)){
+      $tests = " -Dtest=" . implode(",", $specific_tests);
+    }
 
-    return array();
+    $this->execMaven('test -Dskip.schema.build=true' . $tests);
+
   }
 
 
