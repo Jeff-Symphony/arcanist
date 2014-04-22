@@ -1,8 +1,7 @@
 {
   "project.name" : "arcanist",
-  "phabricator.uri" : "https://secure.phabricator.com/",
+  "conduit_uri" : "http://report.sneakpeeq.com:8888/",
   "lint.engine" : "PhutilLintEngine",
-  "unit.engine" : "PhutilUnitTestEngine",
   "load" : [
     "src/"
   ]
