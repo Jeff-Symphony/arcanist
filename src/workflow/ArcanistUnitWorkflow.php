@@ -84,14 +84,6 @@ EOTEXT
           'ugly' => 'Only one output format allowed',
         )
       ),
-      'specific-test' => array(
-        'param' => 'test',
-        'help' =>
-          "Comma seperated list of specific tests to run.",
-        'conflicts' => array(
-          'everything' => '--everything runs all tests',
-        )
-      ),
       'everything' => array(
         'help' => 'Run every test.',
         'conflicts' => array(
@@ -155,7 +147,7 @@ EOTEXT
     if ($everything) {
       $this->engine->setRunAllTests(true);
     } else {
-      $this->engine->setPaths(explode(",", $this->getArgument('specific-test')));
+      $this->engine->setPaths($paths);
     }
     $this->engine->setArguments($this->getPassthruArgumentsAsMap('unit'));
 

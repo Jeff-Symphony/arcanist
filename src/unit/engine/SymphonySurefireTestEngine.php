@@ -25,13 +25,18 @@ class SymphonySurefireTestEngine extends ArcanistBaseUnitTestEngine {
    */
   public function run() {
 
-    $specific_tests = $this->getPaths();
+    $paths = $this->getPaths();
 
-    return $this->runAllTests($specific_tests);
+    if (!$this->hasJavaScalaChanges($paths)) {
+      echo "Nothing to compile\n";
+      return array();
+    }
+
+    return $this->runAllTests();
   }
 
 
-  public function runAllTests($specific_tests) {
+  public function runAllTests() {
     $results = array();
 
     //clean test-compile
@@ -47,7 +52,7 @@ class SymphonySurefireTestEngine extends ArcanistBaseUnitTestEngine {
     }
 
     //test (skip schema build)
-    $this->runTests($specific_tests);
+    $this->runTests();
     $results[] = $this->parseTestResult('spcore/target/surefire-reports');
     return array_mergev($results);
   }
@@ -92,16 +97,9 @@ class SymphonySurefireTestEngine extends ArcanistBaseUnitTestEngine {
   /**
    * Run tests through maven. 
    *
-   * @param  array   Optionally specify which tests to run.
-   *
    */
-  private function runTests($specific_tests) {
-    $tests = "";
-    if(count($specific_tests) && $specific_tests[0]){
-      $tests = " -Dtest=" . implode(",", $specific_tests);
-    }
-
-    $this->execMaven('test -Dskip.schema.build=true' . $tests);
+  private function runTests() {
+    $this->execMaven('test -Dskip.schema.build=true');
 
   }
 
@@ -144,6 +142,19 @@ class SymphonySurefireTestEngine extends ArcanistBaseUnitTestEngine {
     }
 
     return array_mergev($results);
+  }
+
+
+  private function hasJavaScalaChanges($paths) {
+    if (!is_array($paths))
+      return false;
+    foreach ($paths as $path) {
+        $match = preg_match("[\.java|\.scala]", $path);
+        if ($match === 1) {
+            return true;
+        }
+    }
+    return false;
   }
 
 }
